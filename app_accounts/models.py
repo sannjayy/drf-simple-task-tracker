@@ -18,8 +18,7 @@ class User(AbstractUser):
     role = models.CharField(choices=USER_ROLE_OPTIONS, max_length=25, default='user') # Can be multiple
 
     class Meta:
-        verbose_name = 'User Account'
-        
+        verbose_name = 'User Account'        
 
     def save(self, *args, **kwargs):
         if not self.username:      

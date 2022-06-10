@@ -38,7 +38,8 @@ PRIORITY_OPTIONS = (
 
 STATUS_OPTIONS = (
     ('under review', 'Under Review'),
-    ('under process', 'Under Process'),
+    ('assigned', 'Assigned'),
+    ('in process', 'In Process'),
     ('done', 'Done'),
 )
 
@@ -66,7 +67,6 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.status = True
             self.slug = unique_slug_generator(self)
         super().save(*args, **kwargs)
 

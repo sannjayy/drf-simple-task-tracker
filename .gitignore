@@ -1,0 +1,8 @@
+zenv/
+*/migrations/
+*/staticfiles/
+__pycache__/
+.vscode/
+media/
+static/
+.env

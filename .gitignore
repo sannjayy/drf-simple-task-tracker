@@ -4,5 +4,4 @@ zenv/
 __pycache__/
 .vscode/
 media/
-static/
 .env

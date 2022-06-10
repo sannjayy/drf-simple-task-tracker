@@ -10,6 +10,7 @@ GitHub Repo: [https://github.com/sannjayy/drf-simple-task-tracker](https://githu
 
 ---
 ## Project Name: `project`
+#### Static Directory: `static` ||  Media Directory: `media`
 
 **Apps:**  
 ---

@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
 ]
 LOCAL_APPS = [
+    'app_accounts',
 ]
 
 
@@ -51,6 +52,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'app_accounts.backends.EmailORUsernameLoginBackend',
+)
+
+AUTH_USER_MODEL = 'app_accounts.User'
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [

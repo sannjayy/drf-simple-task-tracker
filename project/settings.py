@@ -1,6 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
-import os
+import os, datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,10 +32,11 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'rest_framework', 
     'drf_yasg',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 LOCAL_APPS = [
     'app_accounts',
-    'app_task_manager',
+    'app_task_tracker',
 ]
 
 
@@ -148,6 +149,51 @@ STATICFILES_DIRS = [ BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# URL CONFIG
+LOGIN_URL = '/admin/'
+LOGOUT_URL = '/admin/logout/'
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True # Dev Purpose Only
+
+
+# DJANGO REST FRAMEWORK CONFIG
+REST_FRAMEWORK = {
+    # Common
+    "NON_FIELD_ERRORS_KEY": "error",
+
+    # Throttle
+    "DEFAULT_THROTTLE_RATES": {
+        'anon': '10/hour',
+        'user': '50/hour',
+    },
+
+    # Auth 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# JWT SETTINGS
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'UPDATE_LAST_LOGIN': True,
+    'AUTH_HEADER_TYPES': ('Bearer', ),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', ),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
+
+# SWAGGER SETTINGS
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer':{
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        }
+    }
+}

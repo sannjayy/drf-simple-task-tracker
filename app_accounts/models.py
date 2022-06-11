@@ -38,17 +38,17 @@ class User(AbstractUser):
     def full_name(self):
         return f'{self.first_name} {self.last_name}' if self.first_name else self.email
 
-    @property
-    def is_user(self):
-        return self.user_type == 'user'
+    # @property
+    # def is_user(self):
+    #     return self.user_type == 'user'
     
-    @property
-    def is_leader(self):
-        return self.user_type == 'leader'
+    # @property
+    # def is_leader(self):
+    #     return self.user_type == 'leader'
     
-    @property
-    def is_member(self):
-        return self.user_type == 'leader'
+    # @property
+    # def is_member(self):
+    #     return self.user_type == 'leader'
 
     def tokens(self):
         refresh = RefreshToken.for_user(self)

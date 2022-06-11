@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
 
     # List admin
-    list_display = ('username', 'email', 'full_name', 'is_email_verified', 'is_active', 'role', 'date_joined')
+    list_display = ('id', 'username', 'email', 'full_name', 'is_email_verified', 'is_active', 'role', 'date_joined')
     list_filter = ('role', 'is_email_verified', 'is_active', 'is_superuser')
     fieldsets = (
         ('Personal info', {'fields': ('first_name', 'last_name',)}),
@@ -31,6 +31,7 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email', 'first_name', 'last_name','username')
     ordering = ('-date_joined',)
     filter_horizontal = ('groups',)
+    list_display_links = ('id', 'username',)
     list_per_page = 10
 
     # def get_queryset(self, request): 

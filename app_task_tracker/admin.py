@@ -5,11 +5,12 @@ from .models import Team, Task
 # TEAM ADMIN VIEW
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'leader', 'status', 'created_by', 'created_at', 'updated_at']
+    list_display = ['id', 'name', 'slug', 'leader', 'status', 'created_by', 'created_at', 'updated_at']
     # fields = ['title', 'order', 'slug', 'is_menu', 'status']
     search_fields = ('name','slug', 'leader__first_name')
     list_filter = ('status', )
     readonly_fields = ('slug', 'created_by',)
+    list_display_links = ('name', 'id')
     filter_horizontal = ('members',)
     autocomplete_fields = ('leader',)
     list_per_page = 10
@@ -41,11 +42,12 @@ class TeamAdmin(admin.ModelAdmin):
 # TASK ADMIN VIEW
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['team', 'title', 'priority', 'status',  'assigned_to','started_at', 'completed_at', 'created_by','created_at', 'updated_by', 'updated_at']
+    list_display = ['id', 'team', 'title', 'priority', 'status',  'assigned_to','started_at', 'completed_at', 'created_by','created_at', 'updated_by', 'updated_at']
     search_fields = ('team__name','title', 'leader__first_name')
     list_filter = ('priority', 'status')
     readonly_fields = ('slug', 'created_by', 'updated_by', 'started_at', 'completed_at')
     autocomplete_fields = ('assigned_to', )
+    list_display_links = ('title', 'id')
     list_per_page = 10
     fieldsets = (
         ('Task Info', {'fields': ('team', 'title', 'description')}),

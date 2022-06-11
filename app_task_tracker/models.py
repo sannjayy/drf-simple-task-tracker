@@ -44,7 +44,7 @@ STATUS_OPTIONS = (
 )
 
 class Task(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks')
 
     title = models.CharField(max_length=256)
     description = models.TextField(null=True, blank=True)
@@ -72,3 +72,7 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def is_completed(self):
+        return self.status == 'done'

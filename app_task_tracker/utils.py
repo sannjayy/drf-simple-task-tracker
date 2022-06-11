@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.template.loader import render_to_string 
 from django.core.mail import EmailMultiAlternatives
 
-# Email Sending Thread
+# Email Sending using Thread 
 class EmailThread(threading.Thread):
     
     def __init__(self, email):

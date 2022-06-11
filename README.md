@@ -9,10 +9,17 @@ GitHub Repo: [https://github.com/sannjayy/drf-simple-task-tracker](https://githu
 - Django Rest Framework - 3.13
 
 ---
-## Project Name: `project`
+## Main Project Name: `project`
+
 #### Static Directory: `/static` ||  Media Directory: `/media` located on root directory.
 
-**Apps:** 
+#### For Background Tasks **Celery** and **Threading** Both was implemented.
+Currently using on `Celery` if you wish to use `threading` open **app_task_tracker/emails.py** comment *line 20* and uncomment *line 19*
+``` 
+ # Util.send_mail(email_data, template_name='email/email_notification.html') # TODO: Uncomment If you wish to send emails using Threading
+send_async_email_task.delay(email_data, template_name='email/email_notification.html') # Celery Task
+```
+
 ## Endpoints:
 
 **1. Accounts/User Accounts:**  `/users/v1/` 
@@ -20,9 +27,16 @@ GitHub Repo: [https://github.com/sannjayy/drf-simple-task-tracker](https://githu
 
 *Login can be performed with **username** or **email**.*
 
-- **`/users/v1/account/`** `:GET`
+- **`/users/v1/user/`** `:GET`
 
 *Fetch Authenticated user's Info*
+
+- `/users/v1/accounts/list/` `:GET`
+
+List all accounts `/users/v1/accounts/list/?role=leader` will return all the leaders. Options: *[`user`, `leader`, `member` ]*
+
+search users `/users/v1/accounts/list/?q=<QUERT>`  by **first_name, last_name, email, username**
+
 
 - **`/users/v1/auth/logout/`** `:POST` 
 
@@ -41,23 +55,7 @@ GitHub Repo: [https://github.com/sannjayy/drf-simple-task-tracker](https://githu
 
 ---
 
-**2. TaskTracker/Tasks:**  `/api/v1/`
-
-- **`/api/v1/tasks/`** `:GET | :POST` 
-
-List all the teams that associated with the **User, Team Leader & Team Members.** `:POST` can only performed by **User**. 
-
-- **`/api/v1/tasks/<SLUG>/`** `:GET | :PUT | :PATCH | :DELETE` 
-
-`:GET` can be performed by associated with the **User, Team Leader & Team Members**. 
-
-**Team Leader** only can modify by the *Team Members*. 
-
-`:DELETE` only performed by the owner of the Team. 
-
----
-
-**3. TaskTracker/Teams:**  `/api/v1/`
+**2. TaskTracker/Teams:**  `/api/v1/`
 
 - **`/api/v1/teams/`** `:GET | :POST` 
 
@@ -67,9 +65,38 @@ List all the teams that associated with the **User, Team Leader & Team Members.*
 
 `:GET` can be performed by associated with the **User, Team Leader & Team Members**. 
 
-**Team Leader** only can modify by the *Team Members*. 
+`:PATCH | :PUT`
+
+**Team Leader:** only can modify by the *Team Members*. 
 
 `:DELETE` only performed by the owner of the Task. 
+
+---
+**3. TaskTracker/Tasks:**  `/api/v1/`
+
+- **`/api/v1/tasks/`** `:GET | :POST` 
+
+List all the teams that associated with the **User, Team Leader & Team Members.** `:POST` can only performed by **User**. 
+
+- **`/api/v1/tasks/<SLUG>/`** `:GET | :PUT | :PATCH | :DELETE` 
+
+`:GET` can be performed by associated with the **User, Team Leader & Team Members**. 
+
+Search `/api/v1/tasks/?q=<QUERY>` by **title, description**
+
+Filter records `/api/v1/tasks/?status=assigned` *[Options: `under review`, `assigned`, `in process`, `done`]*
+
+Filter records `/api/v1/tasks/?priority=medium` *[Options: `low`, `medium`, `high`]*
+
+`:PATCH | :PUT` 
+
+**User:** Users can only update the Task's **Title** and **Description**
+
+**Team Leader:** Only can assign to members *[Status will be changed automaticly]*.
+
+**Team Member:** Only can update the status.
+
+`:DELETE` only performed by the owner of the task. 
 
 ---
 ## Admin Panel Permissions:

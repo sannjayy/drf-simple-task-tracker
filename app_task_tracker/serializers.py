@@ -38,7 +38,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'last_modified_by': obj.updated_by.full_name if obj.updated_by else None,     
 
             'info': {
-                'created_by': obj.created_by.full_name or None,                    
+                'created_by': obj.created_by.full_name if obj.updated_by else None,                    
                 'updated_at': obj.updated_at,
                 'created_at': obj.created_at,
             },
@@ -102,11 +102,12 @@ class TeamSerializer(serializers.ModelSerializer):
     
 
     def validate(self, attrs):
-        leader_id = attrs.get('leader_id', '')
-        leader = User.objects.filter(role='leader', id=leader_id)
-        if not leader:
-            raise serializers.ValidationError('Invalid ID passed or user not a team leader.')
+        if leader_id := attrs.get('leader_id', ''):
+            leader = User.objects.filter(role='leader', id=leader_id)
+            if not leader:
+                raise serializers.ValidationError('Invalid ID passed or user not a team leader.')
         return attrs
+        
 
     def create(self, validated_data):
         request = self.context.get("request")
@@ -126,15 +127,16 @@ class TeamSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         request = self.context.get("request")
 
+        if request.user.role != 'leader':
+            raise serializers.ValidationError({'error': 'You do not have permission to update the team.'})
+            
         # Flexible Multi ID Input
         member_ids = ast.literal_eval(validated_data.pop('member_ids')) if validated_data.get('member_ids') else None
         members_id_list = [member_ids] if type(member_ids) == int else member_ids
-        
-        if member_ids and request.user.role == 'leader':           
-            members = User.objects.filter(role='member', id__in=members_id_list)
-        else:
-            raise serializers.ValidationError({'error': 'You do not have permission to update the team.'})
-        
+
+        if member_ids:           
+            members = User.objects.filter(role='member', id__in=members_id_list)            
+
         instance.members.set(members)
         return instance
     

@@ -5,6 +5,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import response, status
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Team, Task
 from .permissions import IsOwnerOfObject
 from .paginations import TeamResultsPagination, TaskResultsPagination
@@ -46,9 +47,10 @@ class TeamViewSet(ModelViewSet):
 class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
     lookup_field = 'slug'
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     search_fields = ['^name','^description', 'slug']
-    ordering = ('-created_at', '-id', 'status', 'priority')
+    ordering = ('-created_at', '-id', '-status', '-priority')
+    filterset_fields = ('priority', 'status')
     throttle_classes = [UserRateThrottle]
     pagination_class = TaskResultsPagination
     permission_classes = (IsAuthenticated,)

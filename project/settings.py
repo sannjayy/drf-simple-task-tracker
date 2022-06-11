@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     'rest_framework', 
     'drf_yasg',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
 ]
 LOCAL_APPS = [
     'app_accounts',
@@ -168,6 +169,8 @@ REST_FRAMEWORK = {
         'user': '50/hour',
     },
 
+    'SEARCH_PARAM': 'q',
+
     # Auth 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -197,3 +200,13 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+# CELERY SETTING
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+# 
+# celery -A config worker -l info -P eventlet

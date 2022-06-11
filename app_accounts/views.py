@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsUser
 from .serializers import LoginSerializer, UserAccountSerializer, LogoutSerializer
 
+
 # USER AUTHENTICATION VIEW
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -15,6 +16,7 @@ class LoginAPIView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 # USER ACCOUNT VIEW
 class UserAccountView(generics.GenericAPIView):
     serializer_class = UserAccountSerializer
@@ -23,6 +25,7 @@ class UserAccountView(generics.GenericAPIView):
     def get(self, request):
         serializer = self.serializer_class(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # LOGOUT SINGLE DEVICE
 class LogoutAPIView(generics.GenericAPIView):

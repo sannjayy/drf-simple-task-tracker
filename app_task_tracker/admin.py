@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Count, Q
+from django.db.models import Q
 from .models import Team, Task
 
 # TEAM ADMIN VIEW

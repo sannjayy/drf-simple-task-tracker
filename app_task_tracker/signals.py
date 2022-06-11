@@ -1,10 +1,7 @@
 from django.utils import timezone
-
-# api_obj.update(count=api_key_data.count + 1, last_used=timezone.localtime(timezone.now())) 
-
 from django.dispatch import receiver
-from django.db.models.signals import post_save, pre_save
-from .models import Team, Task
+from django.db.models.signals import post_save
+from .models import Task
 from .emails import new_task_email_notification
 
 @receiver(post_save, sender=Task)

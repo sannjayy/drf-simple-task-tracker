@@ -71,6 +71,11 @@ send_async_email_task.delay(email_data, template_name='email/email_notification.
 
 - **`/users/v1/user/`** `:GET`
 
+**Required Access Token:**
+```
+Bearer ACCESS_TOKEN_HERE
+```
+
 *Fetch Authenticated user's Info*
 
 - `/users/v1/accounts/list/` `:GET`
@@ -102,12 +107,30 @@ search users `/users/v1/accounts/list/?q=<QUERT>`  by **first_name, last_name, e
 - **`/api/v1/teams/`** `:GET | :POST` 
 
 List all the teams that associated with the **User, Team Leader & Team Members.** `:POST` can only performed by **User**. 
+```
+{
+  "name": "string"
+  "leader_id": 5
+}
+
+leader_id > Primary Key / User ID of Team Leader
+```
 
 - **`/api/v1/teams/<SLUG>/`** `:GET | :PUT | :PATCH | :DELETE` 
 
 `:GET` can be performed by associated with the **User, Team Leader & Team Members**. 
 
-`:PATCH | :PUT`
+`:PATCH | :PUT` 
+
+**Team Leaders can perform only:**
+
+```
+{
+  "member_ids": [1,2,3]
+}
+
+member_ids > Primary Key / User ID of Team Members.
+```
 
 **Team Leader:** only can modify by the *Team Members*. 
 
@@ -119,6 +142,18 @@ List all the teams that associated with the **User, Team Leader & Team Members.*
 - **`/api/v1/tasks/`** `:GET | :POST` 
 
 List all the teams that associated with the **User, Team Leader & Team Members.** `:POST` can only performed by **User**. 
+
+```
+{
+    "team": 0,
+    "title": "string",
+    "description": "string",
+    "priority": "low",
+}
+
+- team > primary key of Team.
+```
+
 
 - **`/api/v1/tasks/<SLUG>/`** `:GET | :PUT | :PATCH | :DELETE` 
 
@@ -133,11 +168,37 @@ Filter records `/api/v1/tasks/?priority=medium` *[Options: `low`, `medium`, `hig
 `:PATCH | :PUT` 
 
 **User:** Users can only update the Task's **Title** and **Description**
+```
+{
+    "team": 0,
+    "title": "string",
+    "description": "string",
+}
+- team > primary key of Team.
+```
 
 **Team Leader:** Only can assign to members *[Status will be changed automaticly]*.
 
+```
+{
+    "team": 0,
+    "assigned_to": 0,
+}
+
+- team > primary key of Team.
+- assigned_to > Primary Key / User ID of Team Member.
+```
+
 **Team Member:** Only can update the status.
 
+```
+{
+    "team": 0,
+    "status": "done"
+}
+
+- team > primary key of Team.
+```
 `:DELETE` only performed by the owner of the task. 
 
 ---

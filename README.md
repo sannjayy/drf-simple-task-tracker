@@ -11,15 +11,57 @@ GitHub Repo: [https://github.com/sannjayy/drf-simple-task-tracker](https://githu
 ---
 ## Main Project Name: `project`
 
-#### Static Directory: `/static` ||  Media Directory: `/media` located on root directory.
+For assign **Role** based admin access can be done in the **Authentication and Authorization/Groups** default group names are: **User, Team Leader, Team Member** and **Super Admin**
 
-#### For Background Tasks **Celery** and **Threading** Both was implemented.
+For testing this project you can use a fresh database. Here is mine which are created on development time.
+
+**Testing `Admin` Account:**
+```
+Email: admin@admin.com
+Username: admin
+Password: 123
+```
+
+**Testing `User` Account:**
+```
+Email: user@user.com
+Username: user
+Password: 123
+```
+
+**Testing `Team Leader` Account:**
+```
+Email: leader@leader.com
+Username: leader
+Password: 123
+```
+
+**Testing `Team Member` Account:**
+```
+Email: member@member.com	
+Username: member
+Password: 123
+```
+---
+**Static Directory:** `/static` located on root directory.
+
+**Media Directory:** `/media` located on root directory.
+
+**Requirements:** `requirements.txt`
+
+---
+For background tasks implemented **Celery** and **Threading** Both.
+
 Currently using on `Celery` if you wish to use `threading` open **app_task_tracker/emails.py** comment *line 20* and uncomment *line 19*
 ``` 
  # Util.send_mail(email_data, template_name='email/email_notification.html') # TODO: Uncomment If you wish to send emails using Threading
 send_async_email_task.delay(email_data, template_name='email/email_notification.html') # Celery Task
 ```
 
+**Running Celery:**
+```
+ celery -A project worker -l info -P eventlet
+```
 ## Endpoints:
 
 **1. Accounts/User Accounts:**  `/users/v1/` 

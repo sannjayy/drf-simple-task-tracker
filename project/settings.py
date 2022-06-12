@@ -203,10 +203,8 @@ SWAGGER_SETTINGS = {
 
 # CELERY SETTING
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379' # TODO: SET FROM ENV
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
-# 
-# celery -A config worker -l info -P eventlet
